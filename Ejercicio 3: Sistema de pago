@@ -1,0 +1,40 @@
+from abc import ABC, abstractmethod
+
+class MetodoPago(ABC):
+    @abstractmethod
+    def procesar_pago(self, monto):
+        pass
+
+class TarjetaCredito(MetodoPago):
+    def __init__(self, numero, fecha_exp, codigo):
+        self.numero = numero
+        self.fecha_exp = fecha_exp
+        self.codigo = codigo
+
+    def procesar_pago(self, monto):
+        try:
+            # Simulación de validación (que el número tenga 16 dígitos)
+            if len(self.numero) != 16:
+                raise ValueError("Número de tarjeta inválido.")
+            print(f"Pago de ${monto} con Tarjeta aprobado.")
+        except Exception as e:
+            print(f"Error en Tarjeta: {e}")
+
+class Paypal(MetodoPago):
+    def __init__(self, correo, saldo_disponible):
+        self.correo = correo
+        self.saldo = saldo_disponible
+
+    def procesar_pago(self, monto):
+        if monto > self.saldo:
+            print(f"Error en Paypal: Saldo insuficiente para ${monto}.")
+        else:
+            self.saldo -= monto
+            print(f"Pago de ${monto} con Paypal exitoso. Nuevo saldo: ${self.saldo}")
+
+# Pruebas
+pago1 = TarjetaCredito("1234567890123456", "12/28", "123")
+pago2 = Paypal("usuario@mail.com", 100.0)
+
+pago1.procesar_pago(50.0)
+pago2.procesar_pago(150.0) # aqui fallará por saldo
