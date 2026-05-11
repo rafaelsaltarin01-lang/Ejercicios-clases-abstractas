@@ -1,0 +1,30 @@
+from abc import ABC, abstractmethod
+
+class SensorTemperatura(ABC):
+    @abstractmethod
+    def obtener_temperatura(self):
+        pass
+
+class SensorCelsius(SensorTemperatura):
+    def __init__(self, valor):
+        self.valor = valor
+
+    def obtener_temperatura(self):
+        return f"{self.valor}°C"
+
+    def a_fahrenheit(self):
+        return (self.valor * 9/5) + 32
+
+class SensorFahrenheit(SensorTemperatura):
+    def __init__(self, valor):
+        self.valor = valor
+
+    def obtener_temperatura(self):
+        return f"{self.valor}°F"
+
+    def a_celsius(self):
+        return (self.valor - 32) * 5/9
+
+# Prueba
+s1 = SensorCelsius(25)
+print(f"Temp: {s1.obtener_temperatura()} | En F: {s1.a_fahrenheit()}°F")
