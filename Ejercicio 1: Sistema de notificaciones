@@ -1,0 +1,29 @@
+from abc import ABC, abstractmethod
+
+class Notificacion(ABC):
+    @abstractmethod
+    def enviar(self):
+        pass
+
+class EmailNotificacion(Notificacion):
+    def __init__(self, asunto, cuerpo):
+        self.asunto = asunto
+        self.cuerpo = cuerpo
+
+    def enviar(self):
+        print(f"Enviando Email... \nAsunto: {self.asunto}\nMensaje: {self.cuerpo}")
+
+class SMSNotificacion(Notificacion):
+    def __init__(self, mensaje):
+        self.limite = 160
+        # Validamos el límite de caracteres
+        self.mensaje = mensaje[:self.limite] 
+
+    def enviar(self):
+        print(f"Enviando SMS: {self.mensaje}")
+
+# Prueba
+correo = EmailNotificacion("Bienvenida", "Hola, gracias por unirte.")
+sms = SMSNotificacion("Tu código es 1234")
+correo.enviar()
+sms.enviar()
